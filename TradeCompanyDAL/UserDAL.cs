@@ -11,8 +11,8 @@ namespace TradeCompanyDAL
     {
         public UserDAL():base("TradingCompanyEntities")
         {
-
         }
+
         public DbSet<tblUser> Users { get; set; }
 
         public int AddUser(tblUser user)

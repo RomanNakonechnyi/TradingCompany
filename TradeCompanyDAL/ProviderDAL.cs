@@ -7,19 +7,74 @@ using System.Threading.Tasks;
 
 namespace TradeCompanyDAL
 {
-    public class ProviderDAL : DbContext
+    public class ProviderDAL : TradingCompanyEntities
     {
-        public ProviderDAL():base("TradingCompanyEntities")
-        {
-        }
-
-        public DbSet<tblProvider> Providers { get; set; }
-
         public List<tblProvider> GetProviders()
         {
             using (var db = new ProviderDAL())
             {
-                return db.Providers.ToList();
+                return db.tblProviders
+                    .Where(x => x.blocked == false)
+                    .ToList();
+            }
+        }
+
+        public List<tblProvider> SortProviders(List<tblProvider> providers,int type)
+        {
+            switch (type)
+            {
+                case 1:
+                    return providers.OrderBy(x=>x.name).ToList();
+                case 2:
+                    return providers.OrderByDescending(x => x.name).ToList();
+                case 3:
+                    return providers.OrderBy(x => x.rating).ToList();
+                case 4:
+                    return providers.OrderByDescending(x => x.rating).ToList();
+
+                default:
+                    return providers;
+            }
+            
+        }
+
+        public List<tblProvider> GetBlockedProviders()
+        {
+            using (var db = new ProviderDAL())
+            {
+                return db.tblProviders
+                    .Where(x => x.blocked == true)
+                    .ToList();
+            }
+        }
+
+        public int UnblockById(int id)
+        {
+            using (var db = new ProviderDAL())
+            {
+                var result = db.tblProviders.SingleOrDefault(p => p.providerID == id);
+                if (result != null)
+                {
+                    result.blocked = false;
+                    db.SaveChanges();
+                    return result.providerID;
+                }
+                return 0;
+            }
+        }
+
+        public int BlockById(int id)
+        {
+            using (var db = new ProviderDAL())
+            {
+                var result = db.tblProviders.SingleOrDefault(p => p.providerID == id);
+                if (result != null)
+                {
+                    result.blocked = true;
+                    db.SaveChanges();
+                    return result.providerID;
+                }
+                return 0;
             }
         }
     }
