@@ -1,0 +1,425 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TradingCompanyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblCategory">
+          <Key>
+            <PropertyRef Name="categoryID" />
+          </Key>
+          <Property Name="categoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblOrder">
+          <Key>
+            <PropertyRef Name="orderID" />
+          </Key>
+          <Property Name="orderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="provProdID" Type="int" Nullable="false" />
+          <Property Name="count" Type="int" Nullable="false" />
+          <Property Name="address" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="price" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblProducer">
+          <Key>
+            <PropertyRef Name="producerID" />
+          </Key>
+          <Property Name="producerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblProduct">
+          <Key>
+            <PropertyRef Name="productID" />
+          </Key>
+          <Property Name="productID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="producerID" Type="int" Nullable="false" />
+          <Property Name="price" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="categoryID" Type="int" Nullable="false" />
+          <Property Name="details" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="tblProvider">
+          <Key>
+            <PropertyRef Name="providerID" />
+          </Key>
+          <Property Name="providerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="rating" Type="int" />
+          <Property Name="isOrganization" Type="bit" />
+          <Property Name="blocked" Type="bit" />
+        </EntityType>
+        <EntityType Name="tblProviderProduct">
+          <Key>
+            <PropertyRef Name="providerProductID" />
+          </Key>
+          <Property Name="providerProductID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="prodID" Type="int" Nullable="false" />
+          <Property Name="provID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fullName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="isFemale" Type="bit" />
+          <Property Name="eMail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="phoneNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tblOrder_tblProviderProduct">
+          <End Role="tblProviderProduct" Type="Self.tblProviderProduct" Multiplicity="1" />
+          <End Role="tblOrder" Type="Self.tblOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProviderProduct">
+              <PropertyRef Name="providerProductID" />
+            </Principal>
+            <Dependent Role="tblOrder">
+              <PropertyRef Name="provProdID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProduct_tblProducer">
+          <End Role="tblProducer" Type="Self.tblProducer" Multiplicity="1" />
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProducer">
+              <PropertyRef Name="producerID" />
+            </Principal>
+            <Dependent Role="tblProduct">
+              <PropertyRef Name="producerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProduct_tblType">
+          <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="1" />
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategory">
+              <PropertyRef Name="categoryID" />
+            </Principal>
+            <Dependent Role="tblProduct">
+              <PropertyRef Name="categoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProviderProduct_tblProduct">
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="1" />
+          <End Role="tblProviderProduct" Type="Self.tblProviderProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProduct">
+              <PropertyRef Name="productID" />
+            </Principal>
+            <Dependent Role="tblProviderProduct">
+              <PropertyRef Name="prodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProviderProduct_tblProvider">
+          <End Role="tblProvider" Type="Self.tblProvider" Multiplicity="1" />
+          <End Role="tblProviderProduct" Type="Self.tblProviderProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProvider">
+              <PropertyRef Name="providerID" />
+            </Principal>
+            <Dependent Role="tblProviderProduct">
+              <PropertyRef Name="provID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TradingCompanyModelStoreContainer">
+          <EntitySet Name="tblCategory" EntityType="Self.tblCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblOrder" EntityType="Self.tblOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProducer" EntityType="Self.tblProducer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProduct" EntityType="Self.tblProduct" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProvider" EntityType="Self.tblProvider" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProviderProduct" EntityType="Self.tblProviderProduct" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblOrder_tblProviderProduct" Association="Self.FK_tblOrder_tblProviderProduct">
+            <End Role="tblProviderProduct" EntitySet="tblProviderProduct" />
+            <End Role="tblOrder" EntitySet="tblOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProduct_tblProducer" Association="Self.FK_tblProduct_tblProducer">
+            <End Role="tblProducer" EntitySet="tblProducer" />
+            <End Role="tblProduct" EntitySet="tblProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProduct_tblType" Association="Self.FK_tblProduct_tblType">
+            <End Role="tblCategory" EntitySet="tblCategory" />
+            <End Role="tblProduct" EntitySet="tblProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProviderProduct_tblProduct" Association="Self.FK_tblProviderProduct_tblProduct">
+            <End Role="tblProduct" EntitySet="tblProduct" />
+            <End Role="tblProviderProduct" EntitySet="tblProviderProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProviderProduct_tblProvider" Association="Self.FK_tblProviderProduct_tblProvider">
+            <End Role="tblProvider" EntitySet="tblProvider" />
+            <End Role="tblProviderProduct" EntitySet="tblProviderProduct" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TradingCompanyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblCategory">
+          <Key>
+            <PropertyRef Name="categoryID" />
+          </Key>
+          <Property Name="categoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tblProducts" Relationship="Self.FK_tblProduct_tblType" FromRole="tblCategory" ToRole="tblProduct" />
+        </EntityType>
+        <EntityType Name="tblOrder">
+          <Key>
+            <PropertyRef Name="orderID" />
+          </Key>
+          <Property Name="orderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="provProdID" Type="Int32" Nullable="false" />
+          <Property Name="count" Type="Int32" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="price" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <NavigationProperty Name="tblProviderProduct" Relationship="TradingCompanyModel.FK_tblOrder_tblProviderProduct" FromRole="tblOrder" ToRole="tblProviderProduct" />
+        </EntityType>
+        <EntityType Name="tblProducer">
+          <Key>
+            <PropertyRef Name="producerID" />
+          </Key>
+          <Property Name="producerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tblProducts" Relationship="Self.FK_tblProduct_tblProducer" FromRole="tblProducer" ToRole="tblProduct" />
+        </EntityType>
+        <EntityType Name="tblProduct">
+          <Key>
+            <PropertyRef Name="productID" />
+          </Key>
+          <Property Name="productID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="producerID" Type="Int32" Nullable="false" />
+          <Property Name="price" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="categoryID" Type="Int32" Nullable="false" />
+          <Property Name="details" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblCategory" Relationship="Self.FK_tblProduct_tblType" FromRole="tblProduct" ToRole="tblCategory" />
+          <NavigationProperty Name="tblProducer" Relationship="Self.FK_tblProduct_tblProducer" FromRole="tblProduct" ToRole="tblProducer" />
+          <NavigationProperty Name="tblProviderProducts" Relationship="TradingCompanyModel.FK_tblProviderProduct_tblProduct" FromRole="tblProduct" ToRole="tblProviderProduct" />
+        </EntityType>
+        <EntityType Name="tblProvider">
+          <Key>
+            <PropertyRef Name="providerID" />
+          </Key>
+          <Property Name="providerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="rating" Type="Int32" />
+          <Property Name="isOrganization" Type="Boolean" />
+          <Property Name="blocked" Type="Boolean" />
+          <NavigationProperty Name="tblProviderProducts" Relationship="TradingCompanyModel.FK_tblProviderProduct_tblProvider" FromRole="tblProvider" ToRole="tblProviderProduct" />
+        </EntityType>
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="isFemale" Type="Boolean" />
+          <Property Name="eMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tblProduct_tblType">
+          <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="1" />
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategory">
+              <PropertyRef Name="categoryID" />
+            </Principal>
+            <Dependent Role="tblProduct">
+              <PropertyRef Name="categoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProduct_tblProducer">
+          <End Role="tblProducer" Type="Self.tblProducer" Multiplicity="1" />
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProducer">
+              <PropertyRef Name="producerID" />
+            </Principal>
+            <Dependent Role="tblProduct">
+              <PropertyRef Name="producerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TradingCompanyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblCategories" EntityType="Self.tblCategory" />
+          <EntitySet Name="tblOrders" EntityType="Self.tblOrder" />
+          <EntitySet Name="tblProducers" EntityType="Self.tblProducer" />
+          <EntitySet Name="tblProducts" EntityType="Self.tblProduct" />
+          <EntitySet Name="tblProviders" EntityType="Self.tblProvider" />
+          <EntitySet Name="tblUsers" EntityType="Self.tblUser" />
+          <AssociationSet Name="FK_tblProduct_tblType" Association="Self.FK_tblProduct_tblType">
+            <End Role="tblCategory" EntitySet="tblCategories" />
+            <End Role="tblProduct" EntitySet="tblProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProduct_tblProducer" Association="Self.FK_tblProduct_tblProducer">
+            <End Role="tblProducer" EntitySet="tblProducers" />
+            <End Role="tblProduct" EntitySet="tblProducts" />
+          </AssociationSet>
+          <EntitySet Name="tblProviderProducts" EntityType="TradingCompanyModel.tblProviderProduct" />
+          <AssociationSet Name="FK_tblOrder_tblProviderProduct" Association="TradingCompanyModel.FK_tblOrder_tblProviderProduct">
+            <End Role="tblProviderProduct" EntitySet="tblProviderProducts" />
+            <End Role="tblOrder" EntitySet="tblOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProviderProduct_tblProduct" Association="TradingCompanyModel.FK_tblProviderProduct_tblProduct">
+            <End Role="tblProduct" EntitySet="tblProducts" />
+            <End Role="tblProviderProduct" EntitySet="tblProviderProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProviderProduct_tblProvider" Association="TradingCompanyModel.FK_tblProviderProduct_tblProvider">
+            <End Role="tblProvider" EntitySet="tblProviders" />
+            <End Role="tblProviderProduct" EntitySet="tblProviderProducts" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="tblProviderProduct">
+          <Key>
+            <PropertyRef Name="providerProductID" />
+          </Key>
+          <Property Name="providerProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="prodID" Type="Int32" Nullable="false" />
+          <Property Name="provID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblOrders" Relationship="TradingCompanyModel.FK_tblOrder_tblProviderProduct" FromRole="tblProviderProduct" ToRole="tblOrder" />
+          <NavigationProperty Name="tblProduct" Relationship="TradingCompanyModel.FK_tblProviderProduct_tblProduct" FromRole="tblProviderProduct" ToRole="tblProduct" />
+          <NavigationProperty Name="tblProvider" Relationship="TradingCompanyModel.FK_tblProviderProduct_tblProvider" FromRole="tblProviderProduct" ToRole="tblProvider" />
+        </EntityType>
+        <Association Name="FK_tblOrder_tblProviderProduct">
+          <End Type="TradingCompanyModel.tblProviderProduct" Role="tblProviderProduct" Multiplicity="1" />
+          <End Type="TradingCompanyModel.tblOrder" Role="tblOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProviderProduct">
+              <PropertyRef Name="providerProductID" />
+            </Principal>
+            <Dependent Role="tblOrder">
+              <PropertyRef Name="provProdID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProviderProduct_tblProduct">
+          <End Type="TradingCompanyModel.tblProduct" Role="tblProduct" Multiplicity="1" />
+          <End Type="TradingCompanyModel.tblProviderProduct" Role="tblProviderProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProduct">
+              <PropertyRef Name="productID" />
+            </Principal>
+            <Dependent Role="tblProviderProduct">
+              <PropertyRef Name="prodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProviderProduct_tblProvider">
+          <End Type="TradingCompanyModel.tblProvider" Role="tblProvider" Multiplicity="1" />
+          <End Type="TradingCompanyModel.tblProviderProduct" Role="tblProviderProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProvider">
+              <PropertyRef Name="providerID" />
+            </Principal>
+            <Dependent Role="tblProviderProduct">
+              <PropertyRef Name="provID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TradingCompanyModelStoreContainer" CdmEntityContainer="TradingCompanyEntities">
+          <EntitySetMapping Name="tblCategories">
+            <EntityTypeMapping TypeName="TradingCompanyModel.tblCategory">
+              <MappingFragment StoreEntitySet="tblCategory">
+                <ScalarProperty Name="categoryID" ColumnName="categoryID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblOrders">
+            <EntityTypeMapping TypeName="TradingCompanyModel.tblOrder">
+              <MappingFragment StoreEntitySet="tblOrder">
+                <ScalarProperty Name="orderID" ColumnName="orderID" />
+                <ScalarProperty Name="provProdID" ColumnName="provProdID" />
+                <ScalarProperty Name="count" ColumnName="count" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="price" ColumnName="price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProducers">
+            <EntityTypeMapping TypeName="TradingCompanyModel.tblProducer">
+              <MappingFragment StoreEntitySet="tblProducer">
+                <ScalarProperty Name="producerID" ColumnName="producerID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProducts">
+            <EntityTypeMapping TypeName="TradingCompanyModel.tblProduct">
+              <MappingFragment StoreEntitySet="tblProduct">
+                <ScalarProperty Name="productID" ColumnName="productID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="producerID" ColumnName="producerID" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="categoryID" ColumnName="categoryID" />
+                <ScalarProperty Name="details" ColumnName="details" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProviders">
+            <EntityTypeMapping TypeName="TradingCompanyModel.tblProvider">
+              <MappingFragment StoreEntitySet="tblProvider">
+                <ScalarProperty Name="providerID" ColumnName="providerID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
+                <ScalarProperty Name="isOrganization" ColumnName="isOrganization" />
+                <ScalarProperty Name="blocked" ColumnName="blocked" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUsers">
+            <EntityTypeMapping TypeName="TradingCompanyModel.tblUser">
+              <MappingFragment StoreEntitySet="tblUser">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="fullName" ColumnName="fullName" />
+                <ScalarProperty Name="isFemale" ColumnName="isFemale" />
+                <ScalarProperty Name="eMail" ColumnName="eMail" />
+                <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProviderProducts">
+            <EntityTypeMapping TypeName="TradingCompanyModel.tblProviderProduct">
+              <MappingFragment StoreEntitySet="tblProviderProduct">
+                <ScalarProperty Name="provID" ColumnName="provID" />
+                <ScalarProperty Name="prodID" ColumnName="prodID" />
+                <ScalarProperty Name="providerProductID" ColumnName="providerProductID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
