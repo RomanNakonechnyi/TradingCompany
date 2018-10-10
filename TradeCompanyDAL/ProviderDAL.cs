@@ -95,5 +95,18 @@ namespace TradeCompanyDAL
                     .FirstOrDefault();
             }
         }
+
+        public int AddProvider(tblProvider provider)
+        {
+            if (provider != null)
+            {
+                using (var db = new ProviderDAL())
+                {
+                    db.tblProviders.Add(provider);
+                    db.SaveChanges();
+                    return provider.providerID;
+                }
+            }return 0;
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TradeCompanyDAL;
 using Task1;
+using System.Threading;
 
 namespace Task1.BL
 {
@@ -41,7 +42,7 @@ namespace Task1.BL
             switch (key)
             {
                 case 1:
-                    Unblock();
+                    UnblockSupplier();
                     break;
                 case 0:
                     Manage();
@@ -49,19 +50,6 @@ namespace Task1.BL
                 default:
                     break;
             }
-        }
-
-        public void Unblock()
-        {
-            Console.Write("Enter Provider Id :");
-            Int32.TryParse(Console.ReadLine(), out int id);
-            provider.UnblockById(id);
-            GetBlockedSuppliers();
-        }
-
-        public void AddNewSupplier()
-        {
-            throw new NotImplementedException();
         }
 
         public void GetSuppliers()
@@ -82,7 +70,7 @@ namespace Task1.BL
                     SortSuppliers();
                     break;
                 case 3:
-                    BlockProvider();
+                    BlockSupplier();
                     break;
                 case 0:
                     Manage();
@@ -90,45 +78,6 @@ namespace Task1.BL
                 default:
                     break;
             }
-        }
-
-        public void BlockProvider()
-        {
-            Console.Write("Enter Provider Id :");
-            Int32.TryParse(Console.ReadLine(), out int id);
-            provider.BlockById(id);
-            GetSuppliers();
-        }
-
-        private static void ShowProviders(List<tblProvider> list)
-        {
-            Console.WriteLine("{0,-5} {1,-13} {2,-10} {3,-7}",
-                "ID",
-                "Name",
-                "IsOrganiz",
-                "Rating");
-            foreach (var p in list)
-            {
-                Console.WriteLine("{0,-5} {1,-13} {2,-10} {3,-7}",
-                    p.providerID,
-                    p.name,
-                    p.isOrganization,
-                    p.rating);
-            }
-        }
-        private static void ShowProvider(tblProvider provider)
-        {
-        Console.WriteLine("{0,-5} {1,-13} {2,-10} {3,-7}",
-                "ID",
-                "Name",
-                "IsOrganiz",
-                "Rating");
-           
-        Console.WriteLine("{0,-5} {1,-13} {2,-10} {3,-7}",
-                provider.providerID,
-                provider.name,
-                provider.isOrganization,
-                provider.rating);
         }
 
         public void SearchSuppliers()
@@ -148,7 +97,7 @@ namespace Task1.BL
                         break;
                     case 2:
                         Console.Write("Enter name of supplier: ");
-                        Int32.TryParse(Console.ReadLine(),out int id);
+                        Int32.TryParse(Console.ReadLine(), out int id);
                         ShowProvider(provider.GetProviderById(id));
                         break;
                     default:
@@ -190,5 +139,88 @@ namespace Task1.BL
             } while (cont);
             GetSuppliers();
         }
+
+        public int BlockSupplier()
+        {
+            Console.Write("Enter Provider Id :");
+            Int32.TryParse(Console.ReadLine(), out int id);
+            GetSuppliers();
+            return provider.BlockById(id);
+            
+        }
+
+        public int UnblockSupplier()
+        {
+            Console.Write("Enter Provider Id :");
+            Int32.TryParse(Console.ReadLine(), out int id);
+            GetBlockedSuppliers();
+            return provider.UnblockById(id);
+            
+        }
+
+        public void AddNewSupplier()
+        {
+            var newProvider = new tblProvider();
+            newProvider.blocked = false;
+
+            Console.Write("Name: ");
+            newProvider.name = Console.ReadLine();
+
+            Console.Write("Whether provider is organization (Y/N): ");
+            var isOrganization = Console.ReadKey();
+            if(isOrganization.Key == ConsoleKey.Y)
+            {
+                newProvider.isOrganization = true;
+            }
+            else {
+                newProvider.isOrganization = false;
+            }
+
+            Console.Write("Rating(0-10): ");
+            Int32.TryParse(Console.ReadLine(), out int rating);
+            if(rating<=10 && rating>=0)
+            {
+                newProvider.rating = rating;
+            }
+            else { newProvider.rating = 0; }
+
+            provider.AddProvider(newProvider);
+            Manage();
+        }
+
+
+
+        #region display methods
+        private static void ShowProviders(List<tblProvider> list)
+        {
+            Console.WriteLine("{0,-5} {1,-13} {2,-10} {3,-7}",
+                "ID",
+                "Name",
+                "IsOrganiz",
+                "Rating");
+            foreach (var p in list)
+            {
+                Console.WriteLine("{0,-5} {1,-13} {2,-10} {3,-7}",
+                    p.providerID,
+                    p.name,
+                    p.isOrganization,
+                    p.rating);
+            }
+        }
+        private static void ShowProvider(tblProvider provider)
+        {
+        Console.WriteLine("{0,-5} {1,-13} {2,-10} {3,-7}",
+                "ID",
+                "Name",
+                "IsOrganiz",
+                "Rating");
+           
+        Console.WriteLine("{0,-5} {1,-13} {2,-10} {3,-7}",
+                provider.providerID,
+                provider.name,
+                provider.isOrganization,
+                provider.rating);
+        }
+        #endregion
     }
 }
