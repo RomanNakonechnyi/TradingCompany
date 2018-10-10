@@ -77,5 +77,23 @@ namespace TradeCompanyDAL
                 return 0;
             }
         }
+
+        public tblProvider GetProviderById(int id)
+        {
+            using (var db = new ProviderDAL())
+            {
+                return db.tblProviders.FirstOrDefault(p => p.providerID == id);
+            }
+        }
+        
+        public tblProvider GetProviderByName(string name)
+        {
+            using (var db = new ProviderDAL())
+            {
+                return db.tblProviders
+                    .Where(p => p.name == name)
+                    .FirstOrDefault();
+            }
+        }
     }
 }
