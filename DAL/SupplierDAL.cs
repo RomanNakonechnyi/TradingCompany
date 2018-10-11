@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DTO;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -9,49 +10,49 @@ namespace TradeCompanyDAL
 {
     public class SupplierDAL : TradeCompanyEntities
     {
-        IMapper _mapper;
+        readonly IMapper _mapper;
         public SupplierDAL()
         {
-            var config = new MapperConfiguration(c=>c.AddProfiles(typeof(SupplierDAL)));
+            var config = new MapperConfiguration(c =>c.AddProfiles(typeof(SupplierDAL)));
             _mapper = config.CreateMapper();
         }
-        public List<tblSupplier> GetSuppliers()
+        public List<SupplierDTO> GetSuppliers()
         {
             using (var db = new SupplierDAL())
             {
-
-                return db.tblSuppliers
+                var sups = db.tblSuppliers
                     .Where(x => x.isBlocked == false)
                     .ToList();
+                return _mapper.Map<List<SupplierDTO>>(sups);
             }
         }
 
-        public List<tblSupplier> SortSuppliers(List<tblSupplier> supplier, int type)
+        public List<SupplierDTO> SortSuppliers(List<SupplierDTO> suppliers, int type)
         {
             switch (type)
             {
                 case 1:
-                    return supplier.OrderBy(x => x.name).ToList();
+                    return suppliers.OrderBy(x => x.name).ToList();
                 case 2:
-                    return supplier.OrderByDescending(x => x.name).ToList();
+                    return suppliers.OrderByDescending(x => x.name).ToList();
                 case 3:
-                    return supplier.OrderBy(x => x.rating).ToList();
+                    return suppliers.OrderBy(x => x.rating).ToList();
                 case 4:
-                    return supplier.OrderByDescending(x => x.rating).ToList();
+                    return suppliers.OrderByDescending(x => x.rating).ToList();
 
                 default:
-                    return supplier;
+                    return suppliers;
             }
-
         }
 
-        public List<tblSupplier> GetBlockedSuppliers()
+        public List<SupplierDTO> GetBlockedSuppliers()
         {
             using (var db = new SupplierDAL())
             {
-                return db.tblSuppliers
+                var sups = db.tblSuppliers
                     .Where(x => x.isBlocked == true)
                     .ToList();
+                return _mapper.Map<List<SupplierDTO>>(sups);
             }
         }
 
@@ -85,31 +86,32 @@ namespace TradeCompanyDAL
             }
         }
 
-        public tblSupplier GetSupplierById(int id)
+        public SupplierDTO GetSupplierById(int id)
         {
             using (var db = new SupplierDAL())
             {
-                return db.tblSuppliers.FirstOrDefault(p => p.supplierId == id);
+                return _mapper.Map<SupplierDTO>(db.tblSuppliers.FirstOrDefault(p => p.supplierId == id));
             }
         }
 
-        public tblSupplier GetSupplierByName(string name)
+        public SupplierDTO GetSupplierByName(string name)
         {
             using (var db = new SupplierDAL())
             {
-                return db.tblSuppliers
+                var supplier = db.tblSuppliers
                     .Where(p => p.name == name)
                     .FirstOrDefault();
+                return _mapper.Map<SupplierDTO>(supplier);
             }
         }
 
-        public int AddSupplier(tblSupplier supplier)
+        public int AddSupplier(SupplierDTO supplier)
         {
             if (supplier != null)
             {
                 using (var db = new SupplierDAL())
                 {
-                    db.tblSuppliers.Add(supplier);
+                    db.tblSuppliers.Add(_mapper.Map<tblSupplier>(supplier));
                     db.SaveChanges();
                     return supplier.supplierId;
                 }
@@ -121,7 +123,8 @@ namespace TradeCompanyDAL
         {
             using (var db = new SupplierDAL())
             {
-                tblSupplier provider = GetSupplierById(id);
+                var provider = _mapper.Map<tblSupplier>(GetSupplierById(id));
+
                 if (provider != null)
                 {
                     db.Entry(provider).State = EntityState.Deleted;

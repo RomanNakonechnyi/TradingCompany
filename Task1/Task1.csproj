@@ -70,6 +70,10 @@
       <Project>{bfa455e3-245a-40d8-80ce-61b2524a8499}</Project>
       <Name>DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DTO\DTO.csproj">
+      <Project>{b418710e-997a-4ee5-8e6b-50ce4872f216}</Project>
+      <Name>DTO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TradeCompany.Database\TradeCompany.Database.csproj">
       <Project>{1AD48AC5-2A35-4594-AD6F-AAC6EE348216}</Project>
       <Name>TradeCompany.Database</Name>

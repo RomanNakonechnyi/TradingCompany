@@ -7,6 +7,7 @@ using TradeCompanyDAL;
 using Task1;
 using System.Threading;
 using TradeCompany.Database;
+using DTO;
 
 namespace Task1.BL
 {
@@ -162,7 +163,7 @@ namespace Task1.BL
 
         public void AddNewSupplier()
         {
-            var newSupplier = new tblSupplier();
+            var newSupplier = new SupplierDTO();
             newSupplier.isBlocked = false;
 
             Console.Write("Name: ");
@@ -200,7 +201,7 @@ namespace Task1.BL
         }
 
         #region display methods
-        private static void ShowSuppliers(List<tblSupplier> list)
+        private static void ShowSuppliers(List<SupplierDTO> list)
         {
             Console.WriteLine("{0,-5} {1,-13} {2,-10} {3,-7}",
                 "ID",
@@ -216,7 +217,7 @@ namespace Task1.BL
                     s.rating);
             }
         }
-        private static void ShowSupplier(tblSupplier supplier)
+        private static void ShowSupplier(SupplierDTO supplier)
         {
         Console.WriteLine("{0,-5} {1,-13} {2,-10} {3,-7}",
                 "ID",
