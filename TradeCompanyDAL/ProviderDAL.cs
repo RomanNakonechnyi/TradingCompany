@@ -1,30 +1,35 @@
-﻿using System;
+﻿using AutoMapper;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TradeCompanyDAL
 {
     public class ProviderDAL : TradingCompanyEntities
     {
+        IMapper _mapper;
+        public ProviderDAL()
+        {
+            var config = new MapperConfiguration(c=>c.AddProfiles(typeof(ProviderDAL)));
+            _mapper = config.CreateMapper();
+        }
         public List<tblProvider> GetProviders()
         {
             using (var db = new ProviderDAL())
             {
+
                 return db.tblProviders
                     .Where(x => x.blocked == false)
                     .ToList();
             }
         }
 
-        public List<tblProvider> SortProviders(List<tblProvider> providers,int type)
+        public List<tblProvider> SortProviders(List<tblProvider> providers, int type)
         {
             switch (type)
             {
                 case 1:
-                    return providers.OrderBy(x=>x.name).ToList();
+                    return providers.OrderBy(x => x.name).ToList();
                 case 2:
                     return providers.OrderByDescending(x => x.name).ToList();
                 case 3:
@@ -35,7 +40,7 @@ namespace TradeCompanyDAL
                 default:
                     return providers;
             }
-            
+
         }
 
         public List<tblProvider> GetBlockedProviders()
@@ -85,7 +90,7 @@ namespace TradeCompanyDAL
                 return db.tblProviders.FirstOrDefault(p => p.providerID == id);
             }
         }
-        
+
         public tblProvider GetProviderByName(string name)
         {
             using (var db = new ProviderDAL())
@@ -106,7 +111,23 @@ namespace TradeCompanyDAL
                     db.SaveChanges();
                     return provider.providerID;
                 }
-            }return 0;
+            }
+            return 0;
+        }
+
+        public int DeleteProviderById(int id)
+        {
+            using (var db = new ProviderDAL())
+            {
+                tblProvider provider = GetProviderById(id);
+                if (provider != null)
+                {
+                    db.Entry(provider).State = EntityState.Deleted;
+                    db.SaveChanges();
+                    return 1;
+                }
+                return 0;
+            }
         }
     }
 }

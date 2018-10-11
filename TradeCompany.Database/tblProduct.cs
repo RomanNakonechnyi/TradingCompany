@@ -7,26 +7,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TradeCompanyDAL
+namespace TradeCompany.Database
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class tblProvider
+    public partial class tblProduct
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tblProvider()
+        public tblProduct()
         {
-            this.tblProviderProducts1 = new HashSet<tblProviderProduct>();
+            this.tblSupplierProducts = new HashSet<tblSupplierProduct>();
         }
     
-        public int providerID { get; set; }
+        public int productId { get; set; }
         public string name { get; set; }
-        public Nullable<int> rating { get; set; }
-        public Nullable<bool> isOrganization { get; set; }
-        public Nullable<bool> blocked { get; set; }
+        public Nullable<int> producerId { get; set; }
+        public decimal price { get; set; }
+        public Nullable<int> categoryId { get; set; }
+        public string details { get; set; }
     
+        public virtual tblCategory tblCategory { get; set; }
+        public virtual tblProducer tblProducer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblProviderProduct> tblProviderProducts1 { get; set; }
+        public virtual ICollection<tblSupplierProduct> tblSupplierProducts { get; set; }
     }
 }

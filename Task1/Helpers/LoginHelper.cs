@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TradeCompanyDAL;
 
 namespace Task1.Helpers
 {
     static class LoginHelper
-    {
+    {   
         public static bool Login()
         {
             int counter = 0;
@@ -47,27 +48,12 @@ namespace Task1.Helpers
 
         public static bool ValidateLogin(string login, string password)
         {
-            var correctLogin = "admin";
-            var correctPassword = "admin";
-
-            if (login != correctLogin && password != correctPassword)
+            var userDAL = new UserDAL();
+            var approved = userDAL.ValidateLogin(login, password);
+            if (!approved)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Incorrect login and password");
-                Console.ResetColor();
-                return false;
-            }
-            if (login != correctLogin)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Incorrect login");
-                Console.ResetColor();
-                return false;
-            }
-            if (password != correctPassword)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Incorrect password");
+                Console.WriteLine("Incorrect login or password");
                 Console.ResetColor();
                 return false;
             }

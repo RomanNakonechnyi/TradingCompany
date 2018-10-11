@@ -15,8 +15,8 @@
         <AssociationConnector Association="TradingCompanyModel.FK_tblProduct_tblProducer" ManuallyRouted="false" />
         <EntityTypeShape EntityType="TradingCompanyModel.tblProviderProduct" Width="1.75" PointX="7.875" PointY="4" />
         <AssociationConnector Association="TradingCompanyModel.FK_tblOrder_tblProviderProduct" />
-        <AssociationConnector Association="TradingCompanyModel.FK_tblProviderProduct_tblProduct" />
-        <AssociationConnector Association="TradingCompanyModel.FK_tblProviderProduct_tblProvider" />
+        <AssociationConnector Association="TradingCompanyModel.FK_tblProviderProduct_tblProduct1" />
+        <AssociationConnector Association="TradingCompanyModel.FK_tblProviderProduct_tblProvider1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

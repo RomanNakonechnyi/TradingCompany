@@ -17,7 +17,7 @@ namespace TradeCompanyDAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tblProduct()
         {
-            this.tblProviderProducts = new HashSet<tblProviderProduct>();
+            this.tblProviderProducts1 = new HashSet<tblProviderProduct>();
         }
     
         public int productID { get; set; }
@@ -30,6 +30,6 @@ namespace TradeCompanyDAL
         public virtual tblCategory tblCategory { get; set; }
         public virtual tblProducer tblProducer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblProviderProduct> tblProviderProducts { get; set; }
+        public virtual ICollection<tblProviderProduct> tblProviderProducts1 { get; set; }
     }
 }

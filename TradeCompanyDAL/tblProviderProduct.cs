@@ -23,10 +23,12 @@ namespace TradeCompanyDAL
         public int providerProductID { get; set; }
         public int prodID { get; set; }
         public int provID { get; set; }
+        public int provId { get; set; }
+        public int prodId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblOrder> tblOrders { get; set; }
-        public virtual tblProduct tblProduct { get; set; }
-        public virtual tblProvider tblProvider { get; set; }
+        public virtual tblProduct tblProduct1 { get; set; }
+        public virtual tblProvider tblProvider1 { get; set; }
     }
 }

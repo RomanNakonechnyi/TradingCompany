@@ -1,25 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Task1.BL;
 using Task1.Helpers;
+using TradeCompany.Database;
 using TradeCompanyDAL;
 namespace Task1
 {
     public class Program
     {
         public static bool isLogged;
-        public static ProviderBL provider = new ProviderBL();
+        public static SupplierHelper provider = new SupplierHelper();
         public static void Main(string[] args)
         {
             Menu();
             //isLogged = LoginHelper.Login();
             //if (isLogged)
             //{
-            //    Menu();
+            //   Menu();
             //}
 
             Console.WriteLine("Press anything to stop program. GL!");
@@ -40,14 +37,13 @@ namespace Task1
                     provider.Manage();
                     break;
                 case 0:
-                    isLogged = false;
-                    return;
+                    Console.Clear();
+                    isLogged = LoginHelper.Login();
+                    break;
                 default:
                     break;
             }
         }
-
-
 
         private static void ProfilePage()
         {
@@ -79,7 +75,7 @@ namespace Task1
         public static void AddUser()
         {
             UserDAL user = new UserDAL();
-            user.AddUser(new tblUser { fullName = "Rudy Mancuso", eMail = "gmail.com", isFemale = true, phoneNumber = "+24947187" });
+            user.AddUser(new tblUser { fullName = "Rudy Mancuso", email = "gmail.com", isFemale = true, phoneNumber = "+24947187" });
         }
         
     }

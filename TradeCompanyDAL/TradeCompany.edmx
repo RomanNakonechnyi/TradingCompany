@@ -55,8 +55,8 @@
             <PropertyRef Name="providerProductID" />
           </Key>
           <Property Name="providerProductID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="prodID" Type="int" Nullable="false" />
-          <Property Name="provID" Type="int" Nullable="false" />
+          <Property Name="provId" Type="int" Nullable="false" />
+          <Property Name="prodId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
@@ -69,7 +69,9 @@
           <Property Name="phoneNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <Association Name="FK_tblOrder_tblProviderProduct">
-          <End Role="tblProviderProduct" Type="Self.tblProviderProduct" Multiplicity="1" />
+          <End Role="tblProviderProduct" Type="Self.tblProviderProduct" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="tblOrder" Type="Self.tblOrder" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tblProviderProduct">
@@ -105,26 +107,30 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tblProviderProduct_tblProduct">
-          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="1" />
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="tblProviderProduct" Type="Self.tblProviderProduct" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tblProduct">
               <PropertyRef Name="productID" />
             </Principal>
             <Dependent Role="tblProviderProduct">
-              <PropertyRef Name="prodID" />
+              <PropertyRef Name="prodId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tblProviderProduct_tblProvider">
-          <End Role="tblProvider" Type="Self.tblProvider" Multiplicity="1" />
+          <End Role="tblProvider" Type="Self.tblProvider" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="tblProviderProduct" Type="Self.tblProviderProduct" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tblProvider">
               <PropertyRef Name="providerID" />
             </Principal>
             <Dependent Role="tblProviderProduct">
-              <PropertyRef Name="provID" />
+              <PropertyRef Name="provId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -200,7 +206,7 @@
           <Property Name="details" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tblCategory" Relationship="Self.FK_tblProduct_tblType" FromRole="tblProduct" ToRole="tblCategory" />
           <NavigationProperty Name="tblProducer" Relationship="Self.FK_tblProduct_tblProducer" FromRole="tblProduct" ToRole="tblProducer" />
-          <NavigationProperty Name="tblProviderProducts" Relationship="TradingCompanyModel.FK_tblProviderProduct_tblProduct" FromRole="tblProduct" ToRole="tblProviderProduct" />
+          <NavigationProperty Name="tblProviderProducts1" Relationship="TradingCompanyModel.FK_tblProviderProduct_tblProduct1" FromRole="tblProduct" ToRole="tblProviderProduct" />
         </EntityType>
         <EntityType Name="tblProvider">
           <Key>
@@ -211,7 +217,7 @@
           <Property Name="rating" Type="Int32" />
           <Property Name="isOrganization" Type="Boolean" />
           <Property Name="blocked" Type="Boolean" />
-          <NavigationProperty Name="tblProviderProducts" Relationship="TradingCompanyModel.FK_tblProviderProduct_tblProvider" FromRole="tblProvider" ToRole="tblProviderProduct" />
+          <NavigationProperty Name="tblProviderProducts1" Relationship="TradingCompanyModel.FK_tblProviderProduct_tblProvider1" FromRole="tblProvider" ToRole="tblProviderProduct" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
@@ -267,11 +273,11 @@
             <End Role="tblProviderProduct" EntitySet="tblProviderProducts" />
             <End Role="tblOrder" EntitySet="tblOrders" />
           </AssociationSet>
-          <AssociationSet Name="FK_tblProviderProduct_tblProduct" Association="TradingCompanyModel.FK_tblProviderProduct_tblProduct">
+          <AssociationSet Name="FK_tblProviderProduct_tblProduct1" Association="TradingCompanyModel.FK_tblProviderProduct_tblProduct1">
             <End Role="tblProduct" EntitySet="tblProducts" />
             <End Role="tblProviderProduct" EntitySet="tblProviderProducts" />
           </AssociationSet>
-          <AssociationSet Name="FK_tblProviderProduct_tblProvider" Association="TradingCompanyModel.FK_tblProviderProduct_tblProvider">
+          <AssociationSet Name="FK_tblProviderProduct_tblProvider1" Association="TradingCompanyModel.FK_tblProviderProduct_tblProvider1">
             <End Role="tblProvider" EntitySet="tblProviders" />
             <End Role="tblProviderProduct" EntitySet="tblProviderProducts" />
           </AssociationSet>
@@ -284,8 +290,10 @@
           <Property Name="prodID" Type="Int32" Nullable="false" />
           <Property Name="provID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="tblOrders" Relationship="TradingCompanyModel.FK_tblOrder_tblProviderProduct" FromRole="tblProviderProduct" ToRole="tblOrder" />
-          <NavigationProperty Name="tblProduct" Relationship="TradingCompanyModel.FK_tblProviderProduct_tblProduct" FromRole="tblProviderProduct" ToRole="tblProduct" />
-          <NavigationProperty Name="tblProvider" Relationship="TradingCompanyModel.FK_tblProviderProduct_tblProvider" FromRole="tblProviderProduct" ToRole="tblProvider" />
+          <Property Name="provId" Type="Int32" Nullable="false" />
+          <Property Name="prodId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblProduct1" Relationship="TradingCompanyModel.FK_tblProviderProduct_tblProduct1" FromRole="tblProviderProduct" ToRole="tblProduct" />
+          <NavigationProperty Name="tblProvider1" Relationship="TradingCompanyModel.FK_tblProviderProduct_tblProvider1" FromRole="tblProviderProduct" ToRole="tblProvider" />
         </EntityType>
         <Association Name="FK_tblOrder_tblProviderProduct">
           <End Type="TradingCompanyModel.tblProviderProduct" Role="tblProviderProduct" Multiplicity="1" />
@@ -299,27 +307,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tblProviderProduct_tblProduct">
-          <End Type="TradingCompanyModel.tblProduct" Role="tblProduct" Multiplicity="1" />
+        <Association Name="FK_tblProviderProduct_tblProduct1">
+          <End Type="TradingCompanyModel.tblProduct" Role="tblProduct" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="TradingCompanyModel.tblProviderProduct" Role="tblProviderProduct" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tblProduct">
               <PropertyRef Name="productID" />
             </Principal>
             <Dependent Role="tblProviderProduct">
-              <PropertyRef Name="prodID" />
+              <PropertyRef Name="prodId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tblProviderProduct_tblProvider">
-          <End Type="TradingCompanyModel.tblProvider" Role="tblProvider" Multiplicity="1" />
+        <Association Name="FK_tblProviderProduct_tblProvider1">
+          <End Type="TradingCompanyModel.tblProvider" Role="tblProvider" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="TradingCompanyModel.tblProviderProduct" Role="tblProviderProduct" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tblProvider">
               <PropertyRef Name="providerID" />
             </Principal>
             <Dependent Role="tblProviderProduct">
-              <PropertyRef Name="provID" />
+              <PropertyRef Name="provId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -393,8 +405,8 @@
           <EntitySetMapping Name="tblProviderProducts">
             <EntityTypeMapping TypeName="TradingCompanyModel.tblProviderProduct">
               <MappingFragment StoreEntitySet="tblProviderProduct">
-                <ScalarProperty Name="provID" ColumnName="provID" />
-                <ScalarProperty Name="prodID" ColumnName="prodID" />
+                <ScalarProperty Name="prodId" ColumnName="prodId" />
+                <ScalarProperty Name="provId" ColumnName="provId" />
                 <ScalarProperty Name="providerProductID" ColumnName="providerProductID" />
               </MappingFragment>
             </EntityTypeMapping>
