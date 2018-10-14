@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TradeCompanyDAL;
-using Task1;
-using System.Threading;
-using TradeCompany.Database;
 using DTO;
+using DAL;
 
 namespace Task1.BL
 {
@@ -18,7 +12,7 @@ namespace Task1.BL
         public void Manage()
         {
             Console.Clear();
-            Console.WriteLine("List of suppliers - 1; \tNew supplier - 2; \tBlocked suppliers - 3;");
+            Console.WriteLine("List of suppliers - 1; \tNew supplier - 2; \tBlocked suppliers - 3; \n 4 - Suppliers with products they deliver");
             Int32.TryParse(Console.ReadLine(), out int key);
             switch (key)
             {
@@ -31,9 +25,84 @@ namespace Task1.BL
                 case 3:
                     GetBlockedSuppliers();
                     break;
+                case 4:
+                    GetSuppliersWithProducts();
+                    break;
                 default:
                     break;
             }
+        }
+
+        private void GetSuppliersWithProducts()
+        {
+            Console.WriteLine("\t\t Page where all relationship between suppliers and products are listed ");
+            var suppliers = supplier.GetSuppliersWithProducts();
+            ShowSuppliers(suppliers);
+
+            Console.WriteLine("Add new relationship - 1; \t Back - 0;");
+            Int32.TryParse(Console.ReadLine(), out int key);
+            switch (key)
+            {
+                case 1:
+                    AddNewRelationship();
+                    break;
+                case 0:
+                    Manage();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void AddNewRelationship()
+        {
+            Console.WriteLine("Update existing - 1; Create new - 2 \t Back - 0;");
+            Int32.TryParse(Console.ReadLine(), out int key);
+            switch (key)
+            {
+                case 1:
+                    UpdateRelationShip();
+                    break;
+                case 2:
+                    CreateRelationship();
+                    break;
+                case 0:
+                    GetSuppliersWithProducts();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void CreateRelationship()
+        {
+            Console.WriteLine(" Choose supplier :");
+            ShowSuppliers(supplier.GetSuppliers());
+            Console.Write("Enter id : ");
+            Int32.TryParse(Console.ReadLine(), out int key);
+            var s = supplier.GetSupplierById(key);
+
+            Console.WriteLine(" Choose supplier :");
+            ProductHelper.ShowProducts(ProductHelper.provider.GetProducts());
+            Console.Write("Enter id : ");
+            Int32.TryParse(Console.ReadLine(), out int p_key);
+            var p = ProductHelper.provider.GetProductById(p_key);
+
+            if(s!=null && p!=null)
+            {
+                SupplierProductDAL.AddRelationship(s, p);
+            }
+            else
+            {
+                Console.WriteLine("Something goes wrong . Try again!");
+                CreateRelationship();
+            }
+            GetSuppliersWithProducts();
+        }
+
+        private void UpdateRelationShip()
+        {
+            throw new NotImplementedException();
         }
 
         public void GetBlockedSuppliers()
@@ -57,8 +126,7 @@ namespace Task1.BL
         public void GetSuppliers()
         {
             var suppliers = supplier.GetSuppliers();
-
-            ShowSuppliers(supplier.GetSuppliers());
+            ShowSuppliers(suppliers);
 
             Console.WriteLine("Search - 1; \t Sort  - 2; \t Block provider - 3; \tDelete provider - 4; \nGo Back - 0; ");
             Int32.TryParse(Console.ReadLine(), out int key);
@@ -97,12 +165,12 @@ namespace Task1.BL
                     case 1:
                         Console.Write("Enter name of supplier: ");
                         var supName = Console.ReadLine();
-                        ShowSupplier(supplier.GetSupplierByName(supName));
+                        ShowSuppliers(supplier.GetSupplierByName(supName));
                         break;
                     case 2:
                         Console.Write("Enter name of supplier: ");
                         Int32.TryParse(Console.ReadLine(), out int id);
-                        ShowSupplier(supplier.GetSupplierById(id));
+                        ShowSuppliers(supplier.GetSupplierById(id));
                         break;
                     default:
                         cont = false;
@@ -179,7 +247,7 @@ namespace Task1.BL
                 newSupplier.isOrganization = false;
             }
 
-            Console.Write("Rating(0-10): ");
+            Console.Write("\nRating(0-10): ");
             Int32.TryParse(Console.ReadLine(), out int rating);
             if(rating<=10 && rating>=0)
             {
@@ -217,7 +285,7 @@ namespace Task1.BL
                     s.rating);
             }
         }
-        private static void ShowSupplier(SupplierDTO supplier)
+        private static void ShowSuppliers(SupplierDTO supplier)
         {
         Console.WriteLine("{0,-5} {1,-13} {2,-10} {3,-7}",
                 "ID",
@@ -231,6 +299,17 @@ namespace Task1.BL
                 supplier.isOrganization,
                 supplier.rating);
         }
+
+        private static void ShowSuppliers(Dictionary<SupplierDTO, List<ProductDTO>> dict)
+        {
+            foreach (var s in dict)
+            {
+                Console.WriteLine($" \nSupplier :'{s.Key.name}'");
+                ProductHelper.ShowProducts(s.Value);
+            }
+        }
         #endregion
     }
 }
+
+        

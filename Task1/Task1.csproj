@@ -56,7 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BL\ProviderBL.cs" />
+    <Compile Include="BL\ProductHelper.cs" />
+    <Compile Include="BL\SupplierHelper.cs" />
     <Compile Include="Helpers\LoginHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

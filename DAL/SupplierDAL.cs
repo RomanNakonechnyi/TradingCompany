@@ -5,8 +5,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using TradeCompany.Database;
+using System;
 
-namespace TradeCompanyDAL
+namespace DAL
 {
     public class SupplierDAL : TradeCompanyEntities
     {
@@ -24,6 +25,36 @@ namespace TradeCompanyDAL
                     .Where(x => x.isBlocked == false)
                     .ToList();
                 return _mapper.Map<List<SupplierDTO>>(sups);
+            }
+        }
+
+        public Dictionary<SupplierDTO,List<ProductDTO>> GetSuppliersWithProducts()
+        {
+            var dict = new Dictionary<SupplierDTO, List<ProductDTO>>();
+            using (var db = new SupplierDAL())
+            {
+                var sups = db.tblSuppliers
+                    .Where(x => x.isBlocked == false)
+                    .ToList();
+
+                foreach (var s in sups)
+                {
+                    List<ProductDTO> prodList = new List<ProductDTO>();
+                    if(s.tblSupplierProducts == null)
+                    {
+                        dict.Add(_mapper.Map<SupplierDTO>(s), null);
+                    }
+                    else
+                    {
+                        foreach (var item in s.tblSupplierProducts)
+                        {
+                            prodList.Add(_mapper.Map<ProductDTO>(item.tblProduct));
+                        }
+                        dict.Add(_mapper.Map<SupplierDTO>(s), prodList);
+                    }
+                    
+                }
+                return dict;
             }
         }
 
