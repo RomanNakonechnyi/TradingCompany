@@ -21,5 +21,6 @@ namespace TradeCompany.Database
         public string phoneNumber { get; set; }
         public string login { get; set; }
         public string passHash { get; set; }
+        public Nullable<bool> isSupplierManager { get; set; }
     }
 }

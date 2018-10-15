@@ -59,6 +59,7 @@
           <Property Name="phoneNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="login" Type="nvarchar" MaxLength="50" />
           <Property Name="passHash" Type="nvarchar" MaxLength="50" />
+          <Property Name="isSupplierManager" Type="bit" />
         </EntityType>
         <Association Name="FK_tblProduct_tblCategory">
           <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="0..1" />
@@ -202,6 +203,7 @@
           <Property Name="phoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="passHash" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="isSupplierManager" Type="Boolean" />
         </EntityType>
         <Association Name="FK_tblProduct_tblCategory">
           <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="0..1" />
@@ -336,6 +338,7 @@
           <EntitySetMapping Name="tblUsers">
             <EntityTypeMapping TypeName="TradeCompanyModel.tblUser">
               <MappingFragment StoreEntitySet="tblUser">
+                <ScalarProperty Name="isSupplierManager" ColumnName="isSupplierManager" />
                 <ScalarProperty Name="passHash" ColumnName="passHash" />
                 <ScalarProperty Name="login" ColumnName="login" />
                 <ScalarProperty Name="userId" ColumnName="userId" />

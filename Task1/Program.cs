@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO;
+using System;
 using System.Threading;
 using Task1.BL;
 using Task1.Helpers;
@@ -11,14 +12,16 @@ namespace Task1
     {
         public static bool isLogged;
         public static SupplierHelper provider = new SupplierHelper();
+        public static UserDTO admin;
         public static void Main(string[] args)
         {
-            Menu();
-            //isLogged = LoginHelper.Login();
-            //if (isLogged)
-            //{
-            //   Menu();
-            //}
+            //Menu();
+            admin = LoginHelper.Login();
+            isLogged = admin != null;
+            if (isLogged)
+            {
+               Menu();
+            }
 
             Console.WriteLine("Press anything to stop program. GL!");
             Console.ReadKey();
@@ -39,7 +42,7 @@ namespace Task1
                     break;
                 case 0:
                     Console.Clear();
-                    isLogged = LoginHelper.Login();
+                    isLogged = false;
                     break;
                 default:
                     break;
@@ -49,7 +52,7 @@ namespace Task1
         private static void ProfilePage()
         {
             Console.Clear();
-            Console.WriteLine("Here will be administrator info ");
+            Console.WriteLine($"Full Name :{admin.fullName} \n email : {admin.eMail} \n Phone Number : {admin.phoneNumber}");
             Console.WriteLine("Back - 1 \tChange Profile - 2");
             Int32.TryParse(Console.ReadLine(), out int key);
             switch (key)
@@ -76,7 +79,7 @@ namespace Task1
         public static void AddUser()
         {
             UserDAL user = new UserDAL();
-            user.AddUser(new tblUser { fullName = "Rudy Mancuso", email = "gmail.com", isFemale = true, phoneNumber = "+24947187" });
+            user.AddUser(new UserDTO { fullName = "Rudy Mancuso", eMail = "gmail.com", isFemale = true, phoneNumber = "+24947187" });
         }
         
     }

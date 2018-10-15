@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Task1.Helpers
 {
     static class LoginHelper
     {   
-        public static bool Login()
+        public static UserDTO Login()
         {
             int counter = 0;
             while (counter < 3)
@@ -27,37 +28,37 @@ namespace Task1.Helpers
 
                 var validated = ValidateLogin(login, password);
 
-                if (!validated)
+                if (validated == null)
                 {
                     counter++;
                 }
-                else if (validated)
+                else if (validated!=null)
                 {
                     Console.WriteLine("\t\t\t WELCOME ");
-                    return true;
+                    return validated;
                 }
                 Thread.Sleep(1000);
                 Console.Clear();
             }
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\t\t\t\t\tCONGRATS!!! YOU HAVE BEEN BLOCKED!!!");
+            Console.WriteLine("\t\t\t\t\tCONGRATSxD!!! YOU HAVE BEEN BLOCKED!!!");
             Console.ResetColor();
-            return false;
+            return null;
 
         }
 
-        public static bool ValidateLogin(string login, string password)
+        public static UserDTO ValidateLogin(string login, string password)
         {
             var userDAL = new UserDAL();
             var approved = userDAL.ValidateLogin(login, password);
-            if (!approved)
+            if ( approved == null )
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Incorrect login or password");
                 Console.ResetColor();
-                return false;
+                return null;
             }
-            return true;
+            return approved;
         }
 
         public static string ReadPassword()
@@ -75,22 +76,17 @@ namespace Task1.Helpers
                 {
                     if (!string.IsNullOrEmpty(password))
                     {
-                        // remove one character from the list of password characters
                         password = password.Substring(0, password.Length - 1);
-                        // get the location of the cursor
                         int pos = Console.CursorLeft;
-                        // move the cursor to the left by one character
                         Console.SetCursorPosition(pos - 1, Console.CursorTop);
-                        // replace it with space
                         Console.Write(" ");
-                        // move the cursor to the left by one character again
+                    
                         Console.SetCursorPosition(pos - 1, Console.CursorTop);
                     }
                 }
                 info = Console.ReadKey(true);
             }
-
-            // add a new line because user pressed enter at the end of their password
+            
             Console.WriteLine();
             return password;
         }

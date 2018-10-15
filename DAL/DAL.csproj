@@ -54,7 +54,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="ProductDAL.cs" />
     <Compile Include="ProductProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +61,7 @@
     <Compile Include="SupplierProductDAL.cs" />
     <Compile Include="SupplierProfile.cs" />
     <Compile Include="UserDAL.cs" />
+    <Compile Include="UserProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

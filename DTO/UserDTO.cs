@@ -10,8 +10,11 @@ namespace DTO
     {
         public int userID { get; set; }
         public string fullName { get; set; }
-        public Nullable<bool> isFemale { get; set; }
+        public bool? isFemale { get; set; }
         public string eMail { get; set; }
         public string phoneNumber { get; set; }
+        public string login { get; set; }
+        public string passHash { get; set; }
+        public bool? isSupplierManager { get; set; }
     }
 }
