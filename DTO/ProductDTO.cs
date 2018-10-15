@@ -15,7 +15,7 @@ namespace DTO
         public decimal price { get; set; }
         public int? categoryId { get; set; }
         public string details { get; set; }
-        public  tblCategory tblCategory { get; set; }
-        public  tblProducer tblProducer { get; set; }
+        public virtual tblCategory tblCategory { get; set; }
+        public virtual tblProducer tblProducer { get; set; }
     }
 }

@@ -27,7 +27,6 @@ namespace DAL
                 return _mapper.Map<List<ProductDTO>>(prods);
             }
         }
-        
 
         public ProductDTO GetProductById(int id)
         {
@@ -35,6 +34,22 @@ namespace DAL
             {
                 var product = db.tblProducts.FirstOrDefault(p => p.productId == id);
                 return _mapper.Map<ProductDTO>(product);
+            }
+        }
+
+        public List<ProductDTO> GetProductsBySupplierID(int id)
+        {
+            using (var db = new SupplierDAL())
+            {
+                var prods = db.tblSupplierProducts.Where(p => p.supplierID == id);
+
+                List<ProductDTO> prodList = new List<ProductDTO>();
+                foreach (var item in prods)
+                {
+                    prodList.Add(_mapper.Map<ProductDTO>(item.tblProduct));
+                }
+
+                return prodList;
             }
         }
     }

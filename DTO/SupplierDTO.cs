@@ -14,6 +14,6 @@ namespace DTO
         public int rating { get; set; }
         public bool? isOrganization { get; set; }
         public bool isBlocked { get; set; }
-        public ICollection<tblSupplierProduct> tblSupplierProducts { get; set; }
+        public virtual ICollection<tblSupplierProduct> tblSupplierProducts { get; set; }
     }
 }

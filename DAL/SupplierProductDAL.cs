@@ -24,5 +24,20 @@ namespace DAL
                 return newRelationship.SupProdId;
             }
         }
+
+        public static void DeleteProduct(int prod_id,int sup_id)
+        {
+            using (var db = new SupplierProductDAL())
+            {
+                var entity = db.tblSupplierProducts.Where(p => p.productID == prod_id).FirstOrDefault(p=>p.supplierID==sup_id);
+                db.tblSupplierProducts.Remove(entity);
+                db.SaveChanges();
+            }
+        }
+
+        public static void AddProduct(SupplierDTO s, ProductDTO prod)
+        {
+                AddRelationship(s, prod);
+        }
     }
 }

@@ -37,7 +37,7 @@ namespace DAL
                     .Where(x => x.isBlocked == false)
                     .ToList();
 
-                foreach (var s in sups)
+                foreach ( var s in sups )
                 {
                     List<ProductDTO> prodList = new List<ProductDTO>();
                     if(s.tblSupplierProducts == null)
@@ -165,6 +165,7 @@ namespace DAL
                 return 0;
             }
         }
+
         
     }
 }
