@@ -37,7 +37,16 @@ namespace DAL
 
         public static void AddProduct(SupplierDTO s, ProductDTO prod)
         {
-                AddRelationship(s, prod);
+            using (var db = new SupplierProductDAL())
+            {
+                var x = db.tblSupplierProducts.Where(p => p.supplierID == s.supplierId);
+                var entity = x.FirstOrDefault(p => p.productID == prod.productId);
+                if(entity == null)
+                {
+                    AddRelationship(s, prod);
+                }
+
+            }
         }
     }
 }
