@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="BL\ProductHelper.cs" />
     <Compile Include="BL\SupplierHelper.cs" />
+    <Compile Include="Helpers\EncryptionHelper.cs" />
     <Compile Include="Helpers\LoginHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

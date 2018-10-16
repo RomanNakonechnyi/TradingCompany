@@ -34,7 +34,7 @@ namespace TradeCompanyDAL
             using (var db = new UserDAL())
             {
                 var user = db.tblUsers.Where(s => s.login == login).FirstOrDefault(s=>s.isSupplierManager==true);
-                if (user!= null)
+                if (user!= null && user.passHash == password)
                 {
                     return _mapper.Map<UserDTO>(user);
                 }

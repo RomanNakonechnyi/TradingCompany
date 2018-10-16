@@ -24,7 +24,7 @@ namespace Task1.Helpers
                 var login = Console.ReadLine().Trim();
 
                 Console.Write("Pa$$word : ");
-                var password = ReadPassword().Trim();
+                var password = EncryptionHelper.Encrypt(ReadPassword().Trim());
 
                 var validated = ValidateLogin(login, password);
 
@@ -44,7 +44,6 @@ namespace Task1.Helpers
             Console.WriteLine("\t\t\t\t\tCONGRATSxD!!! YOU HAVE BEEN BLOCKED!!!");
             Console.ResetColor();
             return null;
-
         }
 
         public static UserDTO ValidateLogin(string login, string password)

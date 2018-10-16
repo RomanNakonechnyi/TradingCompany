@@ -5,6 +5,8 @@ using Task1.BL;
 using Task1.Helpers;
 using TradeCompany.Database;
 using TradeCompanyDAL;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Task1
 {
@@ -79,8 +81,23 @@ namespace Task1
         public static void AddUser()
         {
             UserDAL user = new UserDAL();
-            user.AddUser(new UserDTO { fullName = "Rudy Mancuso", eMail = "gmail.com", isFemale = true, phoneNumber = "+24947187" });
+            user.AddUser(new UserDTO { fullName = "Rudy Mancuso",
+                eMail = "gmail.com",
+                isFemale = true,
+                phoneNumber = "+24947187",
+                login = "admin",
+                passHash = EncryptionHelper.Encrypt("1234"),
+                isSupplierManager = true });
         }
         
+        static string Encrypt(string value)
+        {
+            using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
+            {
+                UTF8Encoding uTF8 = new UTF8Encoding();
+                byte[] data = md5.ComputeHash(uTF8.GetBytes(value));
+                return Convert.ToBase64String(data);
+            }
+        }
     }
 }
