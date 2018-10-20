@@ -1,9 +1,7 @@
 ﻿using DTO;
 using System;
 using System.Threading;
-using Task1.BL;
 using Task1.Helpers;
-using TradeCompany.Database;
 using TradeCompanyDAL;
 using System.Security.Cryptography;
 using System.Text;
@@ -18,6 +16,7 @@ namespace Task1
         public static void Main(string[] args)
         {
             //Menu();
+            Console.WriteLine(EncryptionHelper.Encrypt("1234")); 
             admin = LoginHelper.Login();
             isLogged = admin != null;
             if (isLogged)
@@ -54,7 +53,16 @@ namespace Task1
         private static void ProfilePage()
         {
             Console.Clear();
-            Console.WriteLine($"Full Name :{admin.fullName} \n email : {admin.eMail} \n Phone Number : {admin.phoneNumber}");
+            string sex = "-";
+            if(admin.isFemale.HasValue)
+            {
+                if(admin.isFemale.Value)
+                {
+                    sex = "Female";
+                }
+                sex = "Male";
+            }
+            Console.WriteLine($"Full Name :{admin.fullName} \n email : {admin.eMail} \n Phone Number : {admin.phoneNumber} \n Sex : {sex}");
             Console.WriteLine("Back - 1 \tChange Profile - 2");
             Int32.TryParse(Console.ReadLine(), out int key);
             switch (key)

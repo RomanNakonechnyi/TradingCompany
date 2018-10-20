@@ -1,10 +1,6 @@
 ﻿using DTO;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using TradeCompanyDAL;
 
 namespace Task1.Helpers
@@ -26,13 +22,13 @@ namespace Task1.Helpers
                 Console.Write("Pa$$word : ");
                 var password = EncryptionHelper.Encrypt(ReadPassword().Trim());
 
-                var validated = ValidateLogin(login, password);
+                var validated = ValidateLogin( login, password );
 
-                if (validated == null)
+                if ( validated == null )
                 {
                     counter++;
                 }
-                else if (validated!=null)
+                else if ( validated!=null )
                 {
                     Console.WriteLine("\t\t\t WELCOME ");
                     return validated;
@@ -85,7 +81,6 @@ namespace Task1.Helpers
                 }
                 info = Console.ReadKey(true);
             }
-            
             Console.WriteLine();
             return password;
         }

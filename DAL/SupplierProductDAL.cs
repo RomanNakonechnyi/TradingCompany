@@ -1,9 +1,5 @@
 ﻿using DTO;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TradeCompany.Database;
 
 namespace DAL
@@ -35,7 +31,7 @@ namespace DAL
             }
         }
 
-        public static void AddProduct(SupplierDTO s, ProductDTO prod)
+        public static void AddSupplierProduct(SupplierDTO s, ProductDTO prod)
         {
             using (var db = new SupplierProductDAL())
             {

@@ -3,9 +3,7 @@ using DTO;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using TradeCompany.Database;
-using System;
 
 namespace DAL
 {
@@ -14,9 +12,10 @@ namespace DAL
         readonly IMapper _mapper;
         public SupplierDAL()
         {
-            var config = new MapperConfiguration(c =>c.AddProfiles(typeof(SupplierDAL)));
+            var config = new MapperConfiguration( c => c.AddProfiles(typeof(SupplierDAL)));
             _mapper = config.CreateMapper();
         }
+
         public List<SupplierDTO> GetSuppliers()
         {
             using (var db = new SupplierDAL())
@@ -31,7 +30,7 @@ namespace DAL
         public Dictionary<SupplierDTO,List<ProductDTO>> GetSuppliersWithProducts()
         {
             var dict = new Dictionary<SupplierDTO, List<ProductDTO>>();
-            using (var db = new SupplierDAL())
+            using ( var db = new SupplierDAL() )
             {
                 var sups = db.tblSuppliers
                     .Where(x => x.isBlocked == false)
@@ -52,7 +51,6 @@ namespace DAL
                         }
                         dict.Add(_mapper.Map<SupplierDTO>(s), prodList);
                     }
-                    
                 }
                 return dict;
             }

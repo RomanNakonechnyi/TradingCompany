@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DTO;
 using DAL;
 
-namespace Task1.BL
+namespace Task1.Helpers
 {
     public class SupplierHelper
     {
@@ -85,7 +85,7 @@ namespace Task1.BL
 
         private void GetSupplierDetails()
         {
-            Console.WriteLine("Enter id of suppplier you want to show details");
+            Console.WriteLine(" Enter id of suppplier ");
             Int32.TryParse(Console.ReadLine(), out int id);
             var s = supplier.GetSupplierById(id);
             List<ProductDTO> products = ProductHelper.provider.GetProductsBySupplierID(id);
@@ -152,7 +152,7 @@ namespace Task1.BL
                 Console.ResetColor();
                 return;
             }
-            SupplierProductDAL.AddProduct(s, prod);
+            SupplierProductDAL.AddSupplierProduct(s, prod);
         }
 
         public void SearchSuppliers()
@@ -261,6 +261,7 @@ namespace Task1.BL
             
 
             supplier.AddSupplier(newSupplier);
+            Console.WriteLine($"{newSupplier.name } added");
             Manage();
         }
 

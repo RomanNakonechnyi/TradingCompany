@@ -1,12 +1,6 @@
 ﻿using AutoMapper;
-using DAL;
 using DTO;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TradeCompany.Database;
 
 namespace TradeCompanyDAL
@@ -26,7 +20,7 @@ namespace TradeCompanyDAL
                 db.tblUsers.Add(_mapper.Map<tblUser>(user));
                 db.SaveChanges();
             }
-            return 1;
+            return user.userID;
         }
 
         public UserDTO ValidateLogin(string login, string password)
