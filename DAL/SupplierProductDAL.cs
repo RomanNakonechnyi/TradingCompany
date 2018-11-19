@@ -1,12 +1,13 @@
-﻿using DTO;
+﻿using DAL.Interfaces;
+using DTO;
 using System.Linq;
 using TradeCompany.Database;
 
 namespace DAL
 {
-    public class SupplierProductDAL : TradeCompanyEntities
+    public class SupplierProductDAL : TradeCompanyEntities, ISupplierProductDAL
     {
-        public static int AddRelationship(SupplierDTO s,ProductDTO p)
+        public int AddRelationship(SupplierDTO s,ProductDTO p)
         {
             using (var db = new SupplierProductDAL())
             {
@@ -21,7 +22,7 @@ namespace DAL
             }
         }
 
-        public static void DeleteProduct(int prod_id,int sup_id)
+        public void DeleteProduct(int prod_id,int sup_id)
         {
             using (var db = new SupplierProductDAL())
             {
@@ -31,7 +32,7 @@ namespace DAL
             }
         }
 
-        public static void AddSupplierProduct(SupplierDTO s, ProductDTO prod)
+        public void AddSupplierProduct(SupplierDTO s, ProductDTO prod)
         {
             using (var db = new SupplierProductDAL())
             {

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using DTO;
-using DAL;
+using BussinessLogic;
 
 namespace Task1.Helpers
 {
     public class SupplierHelper
     {
-        public SupplierDAL supplier = new SupplierDAL();
+        public EntityBL providerBL = new EntityBL();
 
         public void Manage()
         {
@@ -35,7 +35,7 @@ namespace Task1.Helpers
         
         public void GetBlockedSuppliers()
         {
-            ShowSuppliers(supplier.GetBlockedSuppliers());
+            ShowSuppliers(providerBL.GetBlockedSuppliers());
             Console.WriteLine("Unblock supplier - 1; \t Back - 0;");
             Int32.TryParse(Console.ReadLine(), out int key);
             switch (key)
@@ -53,7 +53,7 @@ namespace Task1.Helpers
 
         public void GetSuppliers()
         {
-            var suppliers = supplier.GetSuppliers();
+            var suppliers = providerBL.GetSuppliers();
             ShowSuppliers(suppliers);
 
             Console.WriteLine("Search - 1; \t Sort  - 2; \t Block provider - 3; \tDelete provider - 4; \t Supplier details - 5; \nGo Back - 0; ");
@@ -87,8 +87,8 @@ namespace Task1.Helpers
         {
             Console.WriteLine(" Enter id of suppplier ");
             Int32.TryParse(Console.ReadLine(), out int id);
-            var s = supplier.GetSupplierById(id);
-            List<ProductDTO> products = ProductHelper.provider.GetProductsBySupplierID(id);
+            var s = providerBL.GetSupplierById(id);
+            List<ProductDTO> products = providerBL.GetProductsBySupplierID(id);
             ShowSupplierDetails(s, products);
 
             ProductCRUD(id, s);
@@ -113,12 +113,12 @@ namespace Task1.Helpers
             {
                 case 1:
                     AddProduct(s);
-                    ShowSupplierDetails(s, ProductHelper.provider.GetProductsBySupplierID(id));
+                    ShowSupplierDetails(s, providerBL.GetProductsBySupplierID(id));
                     ProductCRUD(id, s);
                     break;
                 case 2:
                     DeleteProduct(s.supplierId);
-                    ShowSupplierDetails(s, ProductHelper.provider.GetProductsBySupplierID(id));
+                    ShowSupplierDetails(s, providerBL.GetProductsBySupplierID(id));
                     ProductCRUD(id,s);
                     break;
                 default:
@@ -134,17 +134,17 @@ namespace Task1.Helpers
 
             Int32.TryParse(Console.ReadLine(), out int id);
 
-            SupplierProductDAL.DeleteProduct(id,sup_id);
+            providerBL.DeleteProduct(id,sup_id);
         }
 
         private void AddProduct(SupplierDTO s)
         {
-            ProductHelper.ShowProducts(ProductHelper.provider.GetProducts());
+            ProductHelper.ShowProducts(providerBL.GetProducts());
             Console.Write("Enter product id ");
 
             Int32.TryParse(Console.ReadLine(), out int id);
 
-            var prod = ProductHelper.provider.GetProductById(id);
+            var prod = providerBL.GetProductById(id);
             if (s == null || prod == null)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -152,7 +152,7 @@ namespace Task1.Helpers
                 Console.ResetColor();
                 return;
             }
-            SupplierProductDAL.AddSupplierProduct(s, prod);
+            providerBL.AddSupplierProduct(s, prod);
         }
 
         public void SearchSuppliers()
@@ -168,12 +168,12 @@ namespace Task1.Helpers
                     case 1:
                         Console.Write("Enter name of supplier: ");
                         var supName = Console.ReadLine();
-                        ShowSuppliers(supplier.GetSupplierByName(supName));
+                        ShowSuppliers(providerBL.GetSupplierByName(supName));
                         break;
                     case 2:
                         Console.Write("Enter name of supplier: ");
                         Int32.TryParse(Console.ReadLine(), out int id);
-                        ShowSuppliers(supplier.GetSupplierById(id));
+                        ShowSuppliers(providerBL.GetSupplierById(id));
                         break;
                     default:
                         cont = false;
@@ -195,16 +195,16 @@ namespace Task1.Helpers
                 switch (key)
                 {
                     case 1:
-                        ShowSuppliers(supplier.SortSuppliers(supplier.GetSuppliers(), 1));
+                        ShowSuppliers(providerBL.SortSuppliers(providerBL.GetSuppliers(), 1));
                         break;
                     case 2:
-                        ShowSuppliers(supplier.SortSuppliers(supplier.GetSuppliers(), 2));
+                        ShowSuppliers(providerBL.SortSuppliers(providerBL.GetSuppliers(), 2));
                         break;
                     case 3:
-                        ShowSuppliers(supplier.SortSuppliers(supplier.GetSuppliers(), 3));
+                        ShowSuppliers(providerBL.SortSuppliers(providerBL.GetSuppliers(), 3));
                         break;
                     case 4:
-                        ShowSuppliers(supplier.SortSuppliers(supplier.GetSuppliers(), 4));
+                        ShowSuppliers(providerBL.SortSuppliers(providerBL.GetSuppliers(), 4));
                         break;
                     default:
                         cont = false;
@@ -219,7 +219,7 @@ namespace Task1.Helpers
         {
             Console.Write("Enter Provider Id :");
             Int32.TryParse(Console.ReadLine(), out int id);
-            supplier.BlockById(id);
+            providerBL.BlockById(id);
             GetSuppliers();
         }
 
@@ -227,7 +227,7 @@ namespace Task1.Helpers
         {
             Console.Write("Enter Provider Id :");
             Int32.TryParse(Console.ReadLine(), out int id);
-            supplier.UnblockById(id);
+            providerBL.UnblockById(id);
             GetBlockedSuppliers();
 
         }
@@ -260,7 +260,7 @@ namespace Task1.Helpers
             else { newSupplier.rating = 0; }
             
 
-            supplier.AddSupplier(newSupplier);
+            providerBL.AddSupplier(newSupplier);
             Console.WriteLine($"{newSupplier.name } added");
             Manage();
         }
@@ -270,7 +270,7 @@ namespace Task1.Helpers
             Console.Write("Enter Provider Id :");
             Int32.TryParse(Console.ReadLine(), out int id);
 
-            supplier.DeleteSuppliersById(id);
+            providerBL.DeleteSuppliersById(id);
             GetSuppliers();
         }
 

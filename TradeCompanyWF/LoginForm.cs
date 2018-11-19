@@ -1,24 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using TradeCompanyDAL;
-using Task1.BL;
+using BussinessLogic.Interfaces;
 using Task1.Helpers;
+using Unity;
+using Unity.Resolution;
 
 namespace TradeCompanyWF
 {
     public partial class LoginForm : Form
     {
-        UserDAL userDAL = new UserDAL();
-        public LoginForm()
+        protected IEntityBL _entityBL;
+        public LoginForm(IEntityBL entityBL)
         {
             InitializeComponent();
+            _entityBL = entityBL;
         }
 
         private void SignInButton_Click(object sender, EventArgs e)
@@ -31,10 +26,11 @@ namespace TradeCompanyWF
                 return;
             }
             var password = EncryptionHelper.Encrypt(pswrdTextBox.Text);
-            var user = LoginBL.ValidateLogin(loginTextBox.Text, password);
+            var user = _entityBL.ValidateLogin(loginTextBox.Text, password);
             if(user != null)
             {
-                MessageBox.Show("Congratulate");
+                var menu = Program.Container.Resolve<MenuForm>(new ParameterOverride("user",user));
+                menu.ShowDialog();
                 return;
             }
             MessageBox.Show("Incorrect password or login!!!", "Error");

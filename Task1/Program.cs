@@ -2,7 +2,7 @@
 using System;
 using System.Threading;
 using Task1.Helpers;
-using TradeCompanyDAL;
+using DAL;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -15,14 +15,15 @@ namespace Task1
         public static UserDTO admin;
         public static void Main(string[] args)
         {
-            //Menu();
-            Console.WriteLine(EncryptionHelper.Encrypt("1234")); 
-            admin = LoginHelper.Login();
-            isLogged = admin != null;
-            if (isLogged)
-            {
-               Menu();
-            }
+            AddUser();
+            Menu();
+            //Console.WriteLine(EncryptionHelper.Encrypt("1234")); 
+            //admin = LoginHelper.Login();
+            //isLogged = admin != null;
+            //if (isLogged)
+            //{
+            //   Menu();
+            //}
 
             Console.WriteLine("Press anything to stop program. GL!");
             Console.ReadKey();
@@ -89,11 +90,11 @@ namespace Task1
         public static void AddUser()
         {
             UserDAL user = new UserDAL();
-            user.AddUser(new UserDTO { fullName = "Rudy Mancuso",
-                eMail = "gmail.com",
+            user.AddUser(new UserDTO { fullName = "Rudy Meancuso",
+                eMail = "gmail.ecom",
                 isFemale = true,
-                phoneNumber = "+24947187",
-                login = "admin",
+                phoneNumber = "+249ee47187",
+                login = "admieen",
                 passHash = EncryptionHelper.Encrypt("1234"),
                 isSupplierManager = true });
         }

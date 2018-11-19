@@ -1,12 +1,14 @@
 ﻿using DTO;
 using System;
 using System.Threading;
-using TradeCompanyDAL;
+using DAL;
+using BussinessLogic;
 
 namespace Task1.Helpers
 {
     static class LoginHelper
-    {   
+    {
+        public static EntityBL entityBL = new EntityBL();
         public static UserDTO Login()
         {
             int counter = 0;
@@ -22,13 +24,13 @@ namespace Task1.Helpers
                 Console.Write("Pa$$word : ");
                 var password = EncryptionHelper.Encrypt(ReadPassword().Trim());
 
-                var validated = ValidateLogin( login, password );
+                var validated = entityBL.ValidateLogin( login, password );
 
                 if ( validated == null )
                 {
                     counter++;
                 }
-                else if ( validated!=null )
+                else if ( validated!= null )
                 {
                     Console.WriteLine("\t\t\t WELCOME ");
                     return validated;
@@ -44,8 +46,7 @@ namespace Task1.Helpers
 
         public static UserDTO ValidateLogin(string login, string password)
         {
-            var userDAL = new UserDAL();
-            var approved = userDAL.ValidateLogin(login, password);
+            var approved = entityBL.ValidateLogin(login, password);
             if ( approved == null )
             {
                 Console.ForegroundColor = ConsoleColor.Red;

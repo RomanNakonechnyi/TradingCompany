@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DAL.Interfaces;
 using DTO;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using TradeCompany.Database;
 
 namespace DAL
 {
-    public class ProductDAL : TradeCompanyEntities
+    public class ProductDAL : TradeCompanyEntities, IProductDAL
     {
         readonly IMapper _mapper;
         public ProductDAL()

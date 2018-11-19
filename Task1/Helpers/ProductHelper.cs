@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using BussinessLogic;
+using DAL;
 using DTO;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,6 @@ namespace Task1.Helpers
 {
     public class ProductHelper
     {
-        public static ProductDAL provider = new ProductDAL();
-        
         public static void ShowProducts(List<ProductDTO> products)
         {
             if(products.Count == 0)

@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
+using DAL.Interfaces;
 using DTO;
 using System.Linq;
 using TradeCompany.Database;
 
-namespace TradeCompanyDAL
+namespace DAL
 {
-    public class UserDAL:TradeCompanyEntities
+    public class UserDAL : TradeCompanyEntities, IUserDAL
     {
         readonly IMapper _mapper;
         public UserDAL()
@@ -15,11 +16,11 @@ namespace TradeCompanyDAL
         }
         public int AddUser(UserDTO user)
         {
-            using (UserDAL db = new UserDAL())
-            {
-                db.tblUsers.Add(_mapper.Map<tblUser>(user));
+            UserDAL db = new UserDAL();
+            
+                user = _mapper.Map < UserDTO > (db.tblUsers.Add(_mapper.Map<tblUser>(user)));
                 db.SaveChanges();
-            }
+           
             return user.userID;
         }
 
