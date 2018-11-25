@@ -105,5 +105,10 @@ namespace BussinessLogic
         {
             _supplierProductDAL.AddSupplierProduct(s, prod);
         }
+
+        public void UpdateUser(UserDTO user)
+        {
+            _userDAL.Update(user);
+        }
     }
 }

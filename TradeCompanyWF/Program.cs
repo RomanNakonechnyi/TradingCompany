@@ -11,18 +11,19 @@ namespace TradeCompanyWF
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         public static UnityContainer Container { get; set; }
+        public static Catalog.AppSettingsManager AppSettingsManager { get; set; }
+        public static IEntityBL entityBL;
+
         [STAThread]
         static void Main()
         {
+            entityBL = new EntityBL();
+            AppSettingsManager = new Catalog.AppSettingsManager();
             ConfigureUnity();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var loginForm = Container.Resolve<LoginForm>();
-            Application.Run(loginForm);
             if (loginForm.ShowDialog() == DialogResult.OK)
             {
                 Application.Run(Container.Resolve<MenuForm>());

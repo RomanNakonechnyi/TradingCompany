@@ -30,7 +30,10 @@ namespace TradeCompanyWF
             if(user != null)
             {
                 var menu = Program.Container.Resolve<MenuForm>(new ParameterOverride("user",user));
+                Hide();
                 menu.ShowDialog();
+                //Application.Run(menu);
+                
                 return;
             }
             MessageBox.Show("Incorrect password or login!!!", "Error");

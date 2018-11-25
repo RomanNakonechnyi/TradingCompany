@@ -22,5 +22,6 @@ namespace BussinessLogic.Interfaces
         List<SupplierDTO> SortSuppliers(List<SupplierDTO> suppliers, int type);
         int UnblockById(int id);
         UserDTO ValidateLogin(string login, string password);
+        void UpdateUser(UserDTO user);
     }
 }

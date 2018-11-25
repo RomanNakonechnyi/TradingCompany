@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DAL.Interfaces;
 using DTO;
+using System;
 using System.Linq;
 using TradeCompany.Database;
 
@@ -34,6 +35,19 @@ namespace DAL
                     return _mapper.Map<UserDTO>(user);
                 }
                     return null;
+            }
+        }
+
+        public void Update(UserDTO user)
+        {
+            using (var db = new UserDAL())
+            {
+                var old = db.tblUsers.FirstOrDefault(u => u.userId == user.userID);
+                old.phoneNumber = user.phoneNumber;
+                old.isFemale = user.isFemale;
+                old.fullName = user.fullName;
+                old.email = user.eMail;
+                db.SaveChanges();
             }
         }
     }

@@ -99,13 +99,14 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(778, 444);
+            this.ClientSize = new System.Drawing.Size(1016, 546);
             this.Controls.Add(this.SignInButton);
             this.Controls.Add(this.passwordLabel);
             this.Controls.Add(this.pswrdTextBox);
             this.Controls.Add(this.loginLabel);
             this.Controls.Add(this.loginTextBox);
-            this.MinimumSize = new System.Drawing.Size(800, 500);
+            this.MaximumSize = new System.Drawing.Size(1038, 602);
+            this.MinimumSize = new System.Drawing.Size(1038, 602);
             this.Name = "LoginForm";
             this.Text = "Trading company";
             this.ResumeLayout(false);
