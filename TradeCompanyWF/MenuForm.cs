@@ -1,49 +1,70 @@
 ﻿using BussinessLogic.Interfaces;
 using DTO;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
+using TradeCompanyWF.UserControls;
 using Unity;
 
 namespace TradeCompanyWF
 {
     public partial class MenuForm : Form
     {
+        #region Private and protected fields
         protected UserDTO _user;
         protected IEntityBL _entityBL;
-        protected List<SupplierDTO> _suppiers;
+        protected List<SupplierDTO> _suppliers;
 
-        private UserControl profileControl;
-        private Button button;
+        private UserControl _profileControl;
+        private UserControl _manageControl;
+        #endregion
 
+        #region Constructor
         public MenuForm(IEntityBL entityBL, UserDTO user = null)
         {
             InitializeComponent();
+            InitializeFields(entityBL, user);
+            InitializeMenuForm(entityBL, user);
+        }
+
+
+
+        #endregion
+
+        #region Private methods
+        private void InitializeFields(IEntityBL entityBL, UserDTO user)
+        {
             _user = user;
             _entityBL = entityBL;
-            profileControl = new ProfileControl(_user)
+            _suppliers = _entityBL.GetSuppliers();
+        }
+
+        private void InitializeMenuForm(IEntityBL entityBL, UserDTO user)
+        {
+            _profileControl = new ProfileControl(_user)
             {
                 Location = new System.Drawing.Point(0, toolStrip1.Height)
             };
-            button = new Button();
-        }
+            _manageControl = new manageContol(_suppliers)
+            {
+                Location = new System.Drawing.Point(0, toolStrip1.Height)
+            };
 
-        private void button1_Click(object sender, System.EventArgs e)
-        {
-
+            MenuSplitContainer.Panel2.Controls.Add(_profileControl);
+            MenuSplitContainer.Panel2.Controls.Add(_manageControl);
+            _manageControl.Hide();
         }
 
         private void ProfileButton_Click(object sender, System.EventArgs e)
         {
-            button.Hide();
-            MenuSplitContainer.Panel2.Controls.Add(profileControl);
-            profileControl.Show();
+            _manageControl.Hide();
+            _profileControl.Show();
         }
 
         private void ManageButton_Click(object sender, System.EventArgs e)
         {
-            profileControl.Hide();
-            MenuSplitContainer.Panel2.Controls.Add(button);
-            button.Show();
+            _profileControl.Hide();
+            _manageControl.Show();
         }
 
         private void toolStripButton1_Click(object sender, System.EventArgs e)
@@ -53,6 +74,12 @@ namespace TradeCompanyWF
             var loginForm = Program.Container.Resolve<LoginForm>();
 
             loginForm.ShowDialog();
+        }
+        #endregion
+
+        private void MenuSplitContainer_Panel2_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

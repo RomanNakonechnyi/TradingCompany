@@ -56,6 +56,7 @@ namespace TradeCompanyWF
             // MenuSplitContainer.Panel2
             // 
             this.MenuSplitContainer.Panel2.Controls.Add(this.toolStrip1);
+            this.MenuSplitContainer.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.MenuSplitContainer_Panel2_Paint);
             this.MenuSplitContainer.Size = new System.Drawing.Size(1057, 573);
             this.MenuSplitContainer.SplitterDistance = 200;
             this.MenuSplitContainer.TabIndex = 0;

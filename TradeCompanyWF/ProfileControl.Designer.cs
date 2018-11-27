@@ -1,4 +1,6 @@
-﻿namespace TradeCompanyWF
+﻿using DTO;
+
+namespace TradeCompanyWF
 {
     partial class ProfileControl
     {

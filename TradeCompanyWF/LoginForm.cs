@@ -14,6 +14,9 @@ namespace TradeCompanyWF
         {
             InitializeComponent();
             _entityBL = entityBL;
+            loginTextBox.Text = "admin";
+            pswrdTextBox.Text = "admin";
+
         }
 
         private void SignInButton_Click(object sender, EventArgs e)
