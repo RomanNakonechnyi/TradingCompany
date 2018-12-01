@@ -47,7 +47,6 @@ namespace TradeCompanyWF
             _user.isFemale = SetGenderFromString(genderComboBox.Text);
 
             Program.entityBL.UpdateUser(_user);
-            
         }
 
         private bool? SetGenderFromString(string text)

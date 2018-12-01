@@ -8,12 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DTO;
+using Unity;
+using Unity.Resolution;
 
 namespace TradeCompanyWF.UserControls
 {
     public partial class manageContol : UserControl
     {
-        private bool _isClicked = false;
+        private List<SupplierDTO> _suppliers;
+        private List<SupplierDTO> _blockedSuppliers;
         public manageContol(List<SupplierDTO> suppliers)
         {
             InitializeComponent();
@@ -22,7 +25,10 @@ namespace TradeCompanyWF.UserControls
 
         private void UpdateGrid(List<SupplierDTO> suppliers)
         {
-            BindingList<SupplierDTO> bindingList = new BindingList<SupplierDTO>(suppliers);
+            _suppliers = suppliers;
+
+            BindingList<SupplierDTO> bindingList = new BindingList<SupplierDTO>(_suppliers);
+
             BindingSource bindingSource = new BindingSource();
             bindingSource.DataSource = bindingList;
 
@@ -64,7 +70,6 @@ namespace TradeCompanyWF.UserControls
         {
             if (ValidateEntries())
             {
-                _isClicked = true;
                 var sup = new SupplierDTO()
                 {
                     name = sNameTextBox.Text,
@@ -75,30 +80,25 @@ namespace TradeCompanyWF.UserControls
 
                 Program.entityBL.AddSupplier(sup);
             }
+            else
+            {
+                MessageBox.Show("Check data", "Error!", MessageBoxButtons.OK);
+            }
         }
 
 
 
         private void addSupplierTabPage_Leave(object sender, EventArgs e)
         {
-            //    if (!_isClicked && !ValidateEntries())
-            //    {
-            //        var result = MessageBox.Show("Are you sure ? New supplier will not be added!", "Attention!", MessageBoxButtons.OKCancel);
-            //        if (result == DialogResult.OK)
-            //        {
-            //            sNameTextBox.Text = "";
-            //            isCompanyComboBox.Text = "";
-            //            ratingNumericUpDown.Value = default(decimal);
-            //        }
-            //    };
-            //    _isClicked = false;
+            _suppliers = Program.entityBL.GetSuppliers();
+            UpdateGrid(_suppliers);
         }
 
         private bool ValidateEntries()
         {
             return isCompanyComboBox.Text != String.Empty
-                && !String.IsNullOrWhiteSpace(sNameTextBox.Text)
-                && ratingNumericUpDown.Value != default(decimal);
+                && !String.IsNullOrWhiteSpace(sNameTextBox.Text);
+                
         }
 
         private bool? SetOrganizationFromString(string text)
@@ -120,26 +120,89 @@ namespace TradeCompanyWF.UserControls
 
         private void manageTabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            
-            if (!_isClicked && !ValidateEntries())
-            {
-                if (e.TabPage == blockedSupTabPage || e.TabPage == suppliersTabPage)
-                {
-                    var result = MessageBox.Show("Are you sure ? New supplier will not be added!", "Attention!", MessageBoxButtons.OKCancel);
-                    if (result == DialogResult.OK)
-                    {
-                        sNameTextBox.Text = "";
-                        isCompanyComboBox.Text = "";
-                        ratingNumericUpDown.Value = default(decimal);
-                    }
+            //if (!_isClicked && !ValidateEntries())
+            //{
+            //    var result = MessageBox.Show("Are you sure ? New supplier will not be added!", "Attention!", MessageBoxButtons.OKCancel);
+            //    if (result == DialogResult.OK)
+            //    {
+            //        sNameTextBox.Text = "";
+            //        isCompanyComboBox.Text = "";
+            //        ratingNumericUpDown.Value = default(decimal);
+            //    }
 
-                    else
-                    {
-                        e.Cancel = true;
-                    }
-                };
-                _isClicked = false;
+            //    else
+            //    {
+            //        e.Cancel = true;
+            //    }
+            //    _isClicked = false;
+            //}
+        }
+
+        private void suppliersGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            EditSupplierForm editSup = Program.Container.Resolve<EditSupplierForm>
+                (
+                    new ParameterOverride("supplier", _suppliers[e.RowIndex])
+                );
+            if (editSup.ShowDialog() == DialogResult.OK)
+            {
+                _suppliers = Program.entityBL.GetSuppliers();
+                UpdateGrid(_suppliers);
             }
+            else
+            {
+                MessageBox.Show("No changes were made");
+            };
+            
+        }
+
+        private void suppliersTabPage_Leave(object sender, EventArgs e)
+        {
+            _blockedSuppliers = Program.entityBL.GetBlockedSuppliers();
+            UpdateBlockedSuppliers(_blockedSuppliers);
+        }
+
+        private void UpdateBlockedSuppliers(List<SupplierDTO> blockedSuppliers)
+        {
+            _blockedSuppliers = blockedSuppliers;
+            BindingList<SupplierDTO> bindingList = new BindingList<SupplierDTO>(_blockedSuppliers);
+
+            BindingSource bindingSource = new BindingSource();
+            bindingSource.DataSource = bindingList;
+
+            blockedDG.DataSource = bindingSource;
+            bindingNavigator1.BindingSource = bindingSource;
+        }
+
+        private void blockedDG_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var result = MessageBox.Show("Are you sure to unblock this supplier?", "Attention", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                Program.entityBL.UnblockById(_blockedSuppliers[e.RowIndex].supplierId);
+                _blockedSuppliers = Program.entityBL.GetBlockedSuppliers();
+                UpdateBlockedSuppliers(_blockedSuppliers);
+                _suppliers = Program.entityBL.GetSuppliers();
+                UpdateGrid(_suppliers);
+            }
+        }
+
+        private void sortButton_Click(object sender, EventArgs e)
+        {
+            var sorted = Program.entityBL.SortSuppliers(_suppliers,1);
+            UpdateGrid(sorted);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var sorted = _blockedSuppliers.OrderBy(s => s.name).ToList();
+            UpdateBlockedSuppliers(sorted);
+        }
+
+        private void searchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            var finded = Program.entityBL.GetSupplierByName(searchTextBox.Text);
+            UpdateGrid(finded);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DAL.Interfaces;
 using DTO;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -101,6 +102,18 @@ namespace DAL
             }
         }
 
+        public void Update(SupplierDTO supplier)
+        {
+            using (var db = new SupplierDAL())
+            {
+                var old = db.tblSuppliers.FirstOrDefault(s => s.supplierId == supplier.supplierId);
+                old.name = supplier.name;
+                old.isOrganization = supplier.isOrganization;
+                old.isBlocked = supplier.isBlocked;
+                db.SaveChanges();
+            }
+        }
+
         public int BlockById(int id)
         {
             using (var db = new SupplierDAL())
@@ -124,14 +137,13 @@ namespace DAL
             }
         }
 
-        public SupplierDTO GetSupplierByName(string name)
+        public List<SupplierDTO> GetSupplierByName(string name)
         {
             using (var db = new SupplierDAL())
             {
-                var supplier = db.tblSuppliers
-                    .Where(p => p.name == name)
-                    .FirstOrDefault();
-                return _mapper.Map<SupplierDTO>(supplier);
+                var suppliers = db.tblSuppliers
+                    .Where(p => p.name == name);
+                return _mapper.Map<List<SupplierDTO>>(suppliers);
             }
         }
 
@@ -163,6 +175,11 @@ namespace DAL
                 }
                 return 0;
             }
+        }
+
+        SupplierDTO ISupplierDAL.GetSupplierByName(string name)
+        {
+            throw new NotImplementedException();
         }
     }
 }

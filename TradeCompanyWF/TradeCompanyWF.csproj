@@ -91,6 +91,12 @@
   <ItemGroup>
     <Compile Include="Catalog\AppSettings.cs" />
     <Compile Include="Catalog\AppSettingsManager.cs" />
+    <Compile Include="EditSupplierForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditSupplierForm.Designer.cs">
+      <DependentUpon>EditSupplierForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +123,9 @@
     <Compile Include="UserControls\ManageContol.Designer.cs">
       <DependentUpon>ManageContol.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="EditSupplierForm.resx">
+      <DependentUpon>EditSupplierForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>

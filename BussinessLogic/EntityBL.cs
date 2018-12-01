@@ -71,7 +71,7 @@ namespace BussinessLogic
             return _supplierDAL.AddSupplier(supplier);
         }
 
-        public SupplierDTO GetSupplierByName(string name)
+        public List<SupplierDTO> GetSupplierByName(string name)
         {
             return _supplierDAL.GetSupplierByName(name);
         }
@@ -109,6 +109,11 @@ namespace BussinessLogic
         public void UpdateUser(UserDTO user)
         {
             _userDAL.Update(user);
+        }
+
+        public void UpdateSupplier(SupplierDTO supplier)
+        {
+            _supplierDAL.Update(supplier);
         }
     }
 }

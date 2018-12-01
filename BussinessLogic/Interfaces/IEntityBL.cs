@@ -16,12 +16,13 @@ namespace BussinessLogic.Interfaces
         List<ProductDTO> GetProducts();
         List<ProductDTO> GetProductsBySupplierID(int id);
         SupplierDTO GetSupplierById(int id);
-        SupplierDTO GetSupplierByName(string name);
+        List<SupplierDTO> GetSupplierByName(string name);
         List<SupplierDTO> GetSuppliers();
         Dictionary<SupplierDTO, List<ProductDTO>> GetSuppliersWithProducts();
         List<SupplierDTO> SortSuppliers(List<SupplierDTO> suppliers, int type);
         int UnblockById(int id);
         UserDTO ValidateLogin(string login, string password);
         void UpdateUser(UserDTO user);
+        void UpdateSupplier(SupplierDTO supplier);
     }
 }
